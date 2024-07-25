@@ -1,5 +1,5 @@
 # Foundlt
- Programa de implementación de grafos para algoritmo de Floyd
+ 
 # Autores
  - Luis Pedro Lira 23669
  - Mía Fuentes  23775
