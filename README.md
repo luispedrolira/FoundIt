@@ -2,7 +2,7 @@
  Programa de implementación de grafos para algoritmo de Floyd
 # Autores
  - Luis Pedro Lira 23669
- - Mía Fuentes
+ - Mía Fuentes  23775
  - Anggelie Velásquez 221181
 
 # Proposito
