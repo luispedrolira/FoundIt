@@ -18,13 +18,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
+@Serializable
+data class SignUpAdminArgs(val username: String)
 
 class RegistroActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                RegistroScreen()
+                val navController = rememberNavController()
+                SignUpAdminScreen(navController = navController)
             }
         }
     }
@@ -32,7 +41,7 @@ class RegistroActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistroScreen() {
+fun SignUpAdminScreen(navController: NavController) {
     var username by remember { mutableStateOf(TextFieldValue("")) }
 
     Column(
@@ -62,7 +71,11 @@ fun RegistroScreen() {
 
         // Botón de "SIGN UP"
         Button(
-            onClick = { /* Lógica para el registro */ },
+            onClick = {
+                val args = SignUpAdminArgs(username.text)
+                val argsJson = Json.encodeToString(args)
+                navController.navigate("dashboard/$argsJson")
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
@@ -74,7 +87,7 @@ fun RegistroScreen() {
 
         // Texto de términos y condiciones
         Text(
-            text = "By signing up, you agree to Photo's",
+            text = "By signing up, you agree to FoundIt's",
             fontSize = 12.sp
         )
 
@@ -105,7 +118,9 @@ fun RegistroScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRegistroScreen() {
-    RegistroScreen()
+fun PreviewSignUpAdminScreen() {
+    val navController = rememberNavController()
+    SignUpAdminScreen(navController = navController)
 }
+
 

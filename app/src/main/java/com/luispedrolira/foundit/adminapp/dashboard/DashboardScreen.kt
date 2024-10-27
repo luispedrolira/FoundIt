@@ -1,8 +1,5 @@
 package com.luispedrolira.foundit.adminapp.dashboard
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,32 +18,24 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import com.luispedrolira.foundit.R
 
-class DashboardScreen : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MaterialTheme {
-                DashboardContent()
-            }
-        }
-    }
-}
 
 data class Objeto(val nombre: String, val ubicacion: String, val imagenResourceId: Int)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardContent() {
-    val objetos = remember { mutableStateListOf(
-        Objeto("Mochila", "Encontrado en biblioteca 10:30 am", R.drawable.mochila),
-        Objeto("Audífonos", "Encontrado en cafetería", R.drawable.audifonos),
-        Objeto("Teléfono", "Encontrado en el salón 512", R.drawable.telefono)
-    ) }
+fun DashboardContent(username: String) {
+    val objetos = remember {
+        mutableStateListOf(
+            Objeto("Mochila", "Encontrado en biblioteca 10:30 am", R.drawable.mochila),
+            Objeto("Audífonos", "Encontrado en cafetería", R.drawable.audifonos),
+            Objeto("Teléfono", "Encontrado en el salón 512", R.drawable.telefono)
+        )
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Administrar objetos", fontWeight = FontWeight.Bold) }
+                title = { Text("Bienvenido, $username", fontWeight = FontWeight.Bold) }
             )
         },
         floatingActionButton = {
@@ -109,6 +98,6 @@ fun ObjetoItem(objeto: Objeto, onDelete: () -> Unit) {
 @Composable
 fun PreviewDashboardContent() {
     MaterialTheme {
-        DashboardContent()
+        DashboardContent(username = "PreviewUser")
     }
 }
