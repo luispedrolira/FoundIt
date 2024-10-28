@@ -15,8 +15,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.luispedrolira.foundit.adminapp.signupadmin.signUpAdminNavGraph
+import com.luispedrolira.foundit.app.home.HomeNavigation
 import com.luispedrolira.foundit.app.home.HomeScreen
 import com.luispedrolira.foundit.app.missingObject.MissingObjectScreen
+import com.luispedrolira.foundit.app.search.SearchScreen
 import com.luispedrolira.foundit.app.missingObject.navigateToHome
 import com.luispedrolira.foundit.app.missingObject.navigateToMissingObject
 import com.luispedrolira.foundit.ui.theme.FoundItTheme
@@ -37,19 +39,38 @@ class MainActivity : ComponentActivity() {
                         startDestination = "signUpAdminRoute",
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        // Integración del flujo de signUpAdmin
+                        // signUpAdmin
                         signUpAdminNavGraph(navController)
 
-                        // Nueva integración de HomeScreen
+                        // HomeScreen
                         composable("homeScreen") {
                             HomeScreen(
                                 onNavigateToMissingObject = { category, location, description ->
                                     navController.navigateToMissingObject(category, location, description)
+                                },
+                                onNavigate = { destination ->
+                                    when (destination) {
+                                        is HomeNavigation.Search -> {
+                                            navController.navigate("searchScreen?query=${destination.query}")
+                                        }
+                                        is HomeNavigation.Home -> {
+                                            navController.popBackStack("homeScreen", false)
+                                        }
+                                    }
                                 }
                             )
                         }
 
-                        // Nueva integración de MissingObjectScreen
+                        // SearchScreen
+                        composable(
+                            route = "searchScreen?query={query}",
+                            arguments = listOf(navArgument("query") { type = NavType.StringType })
+                        ) { backStackEntry ->
+                            val query = backStackEntry.arguments?.getString("query") ?: ""
+                            SearchScreen(query)
+                        }
+
+                        // MissingObjectScreen
                         composable(
                             route = "missingObjectScreen/{category}/{location}/{description}",
                             arguments = listOf(
@@ -75,5 +96,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 

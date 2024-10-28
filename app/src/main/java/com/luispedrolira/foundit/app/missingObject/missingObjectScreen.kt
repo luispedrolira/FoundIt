@@ -25,7 +25,7 @@ fun MissingObjectScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Botón de regreso
+        //Botón de regreso <-
         IconButton(
             onClick = onBackClick,
             modifier = Modifier.size(48.dp)
@@ -36,7 +36,7 @@ fun MissingObjectScreen(
             )
         }
 
-        // Título
+        //título
         Text(
             text = "Objeto perdido",
             fontSize = 24.sp,
@@ -45,7 +45,7 @@ fun MissingObjectScreen(
                 .padding(top = 16.dp, bottom = 24.dp)
         )
 
-        // Información del objeto
+        //información del objeto
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
