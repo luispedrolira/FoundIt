@@ -1,8 +1,5 @@
 package com.luispedrolira.foundit.app.home
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -17,33 +14,26 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            LostAndFoundScreen()
-        }
-    }
-}
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LostAndFoundScreen() {
+fun HomeScreen(
+    onNavigateToMissingObject: (String, String, String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        // Contenido inicial (principal)
+        // Contenido inicial de la pantalla
         Column {
-            // Texto superior
+            // Título superior
             Text(
                 text = "¡Encuentra tus cosas perdidas!",
                 fontWeight = FontWeight.Medium,
@@ -51,7 +41,7 @@ fun LostAndFoundScreen() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            // Nombre FoundIt
+            // Nombre de la aplicación
             Text(
                 text = "FoundIt",
                 fontWeight = FontWeight.Bold,
@@ -64,7 +54,7 @@ fun LostAndFoundScreen() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Título para categorías
+            // Título para las categorías populares
             Text(
                 text = "Categorías Populares",
                 fontWeight = FontWeight.Bold,
@@ -72,12 +62,12 @@ fun LostAndFoundScreen() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            // Categorías populares (Se ponen cajas grises mientras...)
+            // Muestra las categorías populares
             PopularCategories()
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Objetos perdidos
+            // Título para los objetos perdidos
             Text(
                 text = "Objetos perdidos",
                 fontWeight = FontWeight.Bold,
@@ -86,58 +76,11 @@ fun LostAndFoundScreen() {
             )
 
             // Lista de objetos perdidos
-            LostItemsList()
+            LostItemsList(onNavigateToMissingObject)
         }
 
         // Barra de navegación inferior
         BottomNavigationBar()
-    }
-}
-
-//Boton de navegación para todas las pantallas
-@Composable
-fun BottomNavigationBar() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // Boton de Home (parte inferior)
-        Box(
-            modifier = Modifier
-                .background(Color(0xFF4DB6AC), CircleShape) // Color turquesa
-                .padding(12.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = "Home",
-                    tint = Color.Black,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "Home", color = Color.Black, fontSize = 14.sp)
-            }
-        }
-
-        // Boton de busqueda (sin fondo)
-        Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "Buscar",
-            tint = Color.Black,
-            modifier = Modifier.size(28.dp)
-        )
-
-        // Boton de perfil (sin fondo)
-        Icon(
-            imageVector = Icons.Default.Person,
-            contentDescription = "Perfil",
-            tint = Color.Black,
-            modifier = Modifier.size(28.dp)
-        )
     }
 }
 
@@ -171,7 +114,7 @@ fun PopularCategories() {
             .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
+        // Muestra dos categorías populares como ejemplo
         CategoryBox("Cargadores")
         CategoryBox("Mochilas")
     }
@@ -197,26 +140,36 @@ fun CategoryBox(title: String) {
 }
 
 @Composable
-fun LostItemsList() {
-    // Ejemplo de elementos de los objetos perdidos
+fun LostItemsList(onNavigateToMissingObject: (String, String, String) -> Unit) {
+    // Ejemplo de elementos de la lista de objetos perdidos
     val items = listOf(
-        "Mochila negra" to "Encontrado en biblioteca 10:30 am",
-        "Audífonos Samsung" to "Encontrado en cafetería",
-        "Teléfono plegable" to "Encontrado en sala de estudio"
+        Triple("Mochila negra", "Encontrado en biblioteca 10:30 am", "Mochila de color negro"),
+        Triple("Audífonos Samsung", "Encontrado en cafetería", "Audífonos Samsung Galaxy Buds"),
+        Triple("Teléfono plegable", "Encontrado en sala de estudio", "Samsung Galaxy Fold negro")
     )
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items.forEach { item ->
-            LostItemBox(item.first, item.second)
+            LostItemBox(
+                title = item.first,
+                location = item.second,
+                description = item.third,
+                onNavigateToMissingObject = onNavigateToMissingObject
+            )
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LostItemBox(title: String, location: String) {
+fun LostItemBox(
+    title: String,
+    location: String,
+    description: String,
+    onNavigateToMissingObject: (String, String, String) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -224,7 +177,7 @@ fun LostItemBox(title: String, location: String) {
             .padding(8.dp),
         verticalAlignment = Alignment.Top
     ) {
-        // Caja gris simulando un icono o imagen para mientras
+        // Caja gris simulando un ícono o imagen
         Box(
             modifier = Modifier
                 .size(60.dp)
@@ -248,7 +201,9 @@ fun LostItemBox(title: String, location: String) {
             )
         }
         Button(
-            onClick = { /* Navegar a detalles del objeto perdido */ },
+            onClick = {
+                onNavigateToMissingObject(title, location, description)
+            },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726))
         ) {
             Text(text = "MÁS DETALLES →", fontSize = 12.sp)
@@ -256,9 +211,56 @@ fun LostItemBox(title: String, location: String) {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun PreviewLostAndFoundScreen() {
-    LostAndFoundScreen()
+fun BottomNavigationBar() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Botón de Home
+        Box(
+            modifier = Modifier
+                .background(Color(0xFF4DB6AC), CircleShape)
+                .padding(12.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "Home",
+                    tint = Color.Black,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = "Home", color = Color.Black, fontSize = 14.sp)
+            }
+        }
+
+        // Botón de búsqueda
+        Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = "Buscar",
+            tint = Color.Black,
+            modifier = Modifier.size(28.dp)
+        )
+
+        // Botón de perfil
+        Icon(
+            imageVector = Icons.Default.Person,
+            contentDescription = "Perfil",
+            tint = Color.Black,
+            modifier = Modifier.size(28.dp)
+        )
+    }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewHomeScreen() {
+    HomeScreen(
+        onNavigateToMissingObject = { _, _, _ -> }
+    )
+}

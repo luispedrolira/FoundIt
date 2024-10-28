@@ -10,6 +10,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import androidx.navigation.NavType
 
+//La navegacion con el serializable estan en la clase del screen.
 fun NavGraphBuilder.signUpAdminNavGraph(navController: NavController) {
     navigation(startDestination = "signUpAdmin", route = "signUpAdminRoute") {
         composable(route = "signUpAdmin") {

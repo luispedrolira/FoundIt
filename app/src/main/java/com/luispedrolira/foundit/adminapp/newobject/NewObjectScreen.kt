@@ -96,6 +96,15 @@ fun NewObjectContent() {
                 .padding(vertical = 8.dp)
         )
 
+        OutlinedTextField(
+            value = carneEstudiante,
+            onValueChange = { carneEstudiante = it },
+            label = { Text("Ingresa una descripción del obtejo encontrado") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        )
+
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
