@@ -1,4 +1,4 @@
-package com.luispedrolira.foundit.app.search
+package com.luispedrolira.foundit.app.presentation.mainFlow.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.luispedrolira.foundit.app.home.SearchBar
+import com.luispedrolira.foundit.app.presentation.mainFlow.home.SearchBar
 
 @Composable
 private fun SearchScreen(state: Int){
@@ -160,6 +160,8 @@ fun SearchBottomNavigationBar() {
 @Composable
 private fun PreviewSearchScreen() {
     Surface {
-        SearchScreen(state = 2)
+        SearchScreen(
+            state = 2
+        )
     }
 }

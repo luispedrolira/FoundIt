@@ -1,4 +1,4 @@
-package com.luispedrolira.foundit.app.home
+package com.luispedrolira.foundit.app.presentation.mainFlow.home
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
