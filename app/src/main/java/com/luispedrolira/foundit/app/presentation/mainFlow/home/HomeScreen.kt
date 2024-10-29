@@ -32,6 +32,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+@Composable
+fun HomeRoute(){
+
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LostAndFoundScreen() {

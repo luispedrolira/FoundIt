@@ -33,6 +33,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.SearchBar
 
+
+@Composable
+fun SearchRoute(){
+
+}
+
+
 @Composable
 private fun SearchScreen(state: Int){
     when (state){

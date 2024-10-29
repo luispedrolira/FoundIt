@@ -1,2 +1,2 @@
-package com.luispedrolira.foundit.app.login
+package com.luispedrolira.foundit.app.presentation.login
 

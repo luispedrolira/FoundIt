@@ -16,7 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.luispedrolira.foundit.adminapp.signupadmin.signUpAdminNavGraph
+import com.luispedrolira.foundit.adminapp.presentation.signupadmin.signUpAdminNavGraph
 import com.luispedrolira.foundit.ui.theme.FoundItTheme
 
 class MainActivity : ComponentActivity() {

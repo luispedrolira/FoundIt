@@ -1,11 +1,11 @@
-package com.luispedrolira.foundit.adminapp.signupadmin
+package com.luispedrolira.foundit.adminapp.presentation.signupadmin
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.luispedrolira.foundit.adminapp.dashboard.DashboardContent
+import com.luispedrolira.foundit.adminapp.presentation.dashboard.DashboardContent
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import androidx.navigation.NavType

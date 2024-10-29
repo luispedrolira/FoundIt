@@ -1,2 +1,2 @@
-package com.luispedrolira.foundit.adminapp.newobject
+package com.luispedrolira.foundit.adminapp.presentation.newobject
 

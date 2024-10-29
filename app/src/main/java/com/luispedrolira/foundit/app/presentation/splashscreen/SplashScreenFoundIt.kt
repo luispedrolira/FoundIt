@@ -1,2 +1,2 @@
-package com.luispedrolira.foundit.app.splashscreen
+package com.luispedrolira.foundit.app.presentation.splashscreen
 

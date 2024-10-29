@@ -1,4 +1,4 @@
-package com.luispedrolira.foundit.adminapp.signupadmin
+package com.luispedrolira.foundit.adminapp.presentation.signupadmin
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

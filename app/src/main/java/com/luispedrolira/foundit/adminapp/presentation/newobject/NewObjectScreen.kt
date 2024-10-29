@@ -1,4 +1,4 @@
-package com.luispedrolira.foundit.adminapp.newobject
+package com.luispedrolira.foundit.adminapp.presentation.newobject
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

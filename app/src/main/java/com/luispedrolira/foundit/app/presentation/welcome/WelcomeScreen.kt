@@ -1,4 +1,4 @@
-package com.luispedrolira.foundit.app.welcome
+package com.luispedrolira.foundit.app.presentation.welcome
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposableInferredTarget
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,11 +28,21 @@ import androidx.compose.ui.unit.dp
 import com.luispedrolira.foundit.R
 
 @Composable
-private fun WelcomeScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
+fun WelcomeRoute(
+    onWelcomeClick: () -> Unit
+){
+    WelcomeScreen(
+        onWelcomeClick = onWelcomeClick,
+        modifier = Modifier.fillMaxSize()
+    )
+}
+
+@Composable
+private fun WelcomeScreen(
+    onWelcomeClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
 
         // SECCIÓN No 1: Logo de FoundIt
         Box(
@@ -89,14 +100,16 @@ private fun WelcomeScreen() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = { /* TODO */ },
-                    modifier = Modifier.weight(1f).padding(end = 8.dp)
+                    onClick = {  },
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp)
                 ) {
                     Text(text = "LOG IN")
                 }
 
                 Button(
-                    onClick = { /* TODO */ },
+                    onClick = {  },
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(text = "REGISTRO")
@@ -112,6 +125,8 @@ private fun WelcomeScreen() {
 @Composable
 private fun PreviewWelcomeScreen() {
     Surface {
-        WelcomeScreen()
+        WelcomeScreen(
+            onWelcomeClick = { /*TODO*/ }
+        )
     }
 }
