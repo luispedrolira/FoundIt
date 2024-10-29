@@ -1,55 +1,36 @@
-package com.luispedrolira.foundit.app.presentation.mainFlow.home
+package com.luispedrolira.foundit.app.home
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            LostAndFoundScreen()
-        }
-    }
-}
-
 
 @Composable
-fun HomeRoute(){
-
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LostAndFoundScreen() {
+fun HomeScreen(
+    onNavigate: (HomeNavigation) -> Unit,
+    onNavigateToMissingObject: (String, String, String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        // Contenido inicial (principal)
         Column {
-            // Texto superior
+            // Título superior
             Text(
                 text = "¡Encuentra tus cosas perdidas!",
                 fontWeight = FontWeight.Medium,
@@ -57,7 +38,6 @@ fun LostAndFoundScreen() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            // Nombre FoundIt
             Text(
                 text = "FoundIt",
                 fontWeight = FontWeight.Bold,
@@ -65,12 +45,7 @@ fun LostAndFoundScreen() {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            // Barra de búsqueda
-            SearchBar()
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Título para categorías
+            // Categorías populares
             Text(
                 text = "Categorías Populares",
                 fontWeight = FontWeight.Bold,
@@ -78,8 +53,7 @@ fun LostAndFoundScreen() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            // Categorías populares (Se ponen cajas grises mientras...)
-            PopularCategories()
+            PopularCategories(onNavigate)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -91,18 +65,16 @@ fun LostAndFoundScreen() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            // Lista de objetos perdidos
-            LostItemsList()
+            LostItemsList(onNavigateToMissingObject)
         }
 
         // Barra de navegación inferior
-        BottomNavigationBar()
+        BottomNavigationBar(onNavigate)
     }
 }
 
-//Boton de navegación para todas las pantallas
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar(onNavigate: (HomeNavigation) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -111,11 +83,12 @@ fun BottomNavigationBar() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Boton de Home (parte inferior)
+        // Botón de Home
         Box(
             modifier = Modifier
                 .background(Color(0xFF4DB6AC), CircleShape) // Color turquesa
                 .padding(12.dp)
+                .clickable { onNavigate(HomeNavigation.Home) }
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
@@ -129,15 +102,23 @@ fun BottomNavigationBar() {
             }
         }
 
-        // Boton de busqueda (sin fondo)
-        Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "Buscar",
-            tint = Color.Black,
-            modifier = Modifier.size(28.dp)
-        )
+        // Botón de búsqueda
+        Box(
+            modifier = Modifier
+                .clickable { onNavigate(HomeNavigation.Search("")) }
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Buscar",
+                    tint = Color.Black,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+        }
 
-        // Boton de perfil (sin fondo)
+        // Botón de perfil
         Icon(
             imageVector = Icons.Default.Person,
             contentDescription = "Perfil",
@@ -148,63 +129,43 @@ fun BottomNavigationBar() {
 }
 
 @Composable
-fun SearchBar() {
-    var searchQuery by remember { mutableStateOf("") }
-
-    OutlinedTextField(
-        value = searchQuery,
-        onValueChange = { searchQuery = it },
-        label = { Text("Buscar") },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Buscar",
-                tint = Color.Gray
-            )
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White, RoundedCornerShape(10.dp)),
-        keyboardOptions = KeyboardOptions.Default
-    )
-}
-
-@Composable
-fun PopularCategories() {
+fun PopularCategories(onNavigate: (HomeNavigation) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
-        CategoryBox("Cargadores")
-        CategoryBox("Mochilas")
+        // Categorías populares con navegación
+        CategoryBox("Cargadores") { onNavigate(HomeNavigation.Search("Cargadores")) }
+        CategoryBox("Mochilas") { onNavigate(HomeNavigation.Search("Mochilas")) }
     }
 }
 
 @Composable
-fun CategoryBox(title: String) {
+fun CategoryBox(title: String, onClick: () -> Unit) {
     Box(
-        contentAlignment = Alignment.TopStart,
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(150.dp, 100.dp)
             .background(Color.Gray, RoundedCornerShape(10.dp))
+            .clickable { onClick() }
             .padding(8.dp)
     ) {
         Text(
             text = title,
             color = Color.White,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Start
+            fontWeight = FontWeight.Bold
         )
     }
 }
 
 @Composable
-fun LostItemsList() {
-    // Ejemplo de elementos de los objetos perdidos
+fun LostItemsList(
+    onNavigateToMissingObject: (String, String, String) -> Unit
+) {
+    // Ejemplo de elementos de la lista de objetos perdidos
     val items = listOf(
         "Mochila negra" to "Encontrado en biblioteca 10:30 am",
         "Audífonos Samsung" to "Encontrado en cafetería",
@@ -215,14 +176,24 @@ fun LostItemsList() {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items.forEach { item ->
-            LostItemBox(item.first, item.second)
+            LostItemBox(
+                title = item.first,
+                location = item.second,
+                onDetailsClick = {
+                    onNavigateToMissingObject(item.first, item.second, "Descripción del objeto")
+                }
+            )
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LostItemBox(title: String, location: String) {
+fun LostItemBox(
+    title: String,
+    location: String,
+    onDetailsClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -230,7 +201,7 @@ fun LostItemBox(title: String, location: String) {
             .padding(8.dp),
         verticalAlignment = Alignment.Top
     ) {
-        // Caja gris simulando un icono o imagen para mientras
+        // Caja gris como un ícono o imagen
         Box(
             modifier = Modifier
                 .size(60.dp)
@@ -243,28 +214,20 @@ fun LostItemBox(title: String, location: String) {
             Text(
                 text = title,
                 fontWeight = FontWeight.Medium,
-                fontSize = 16.sp,
-                textAlign = TextAlign.Start
+                fontSize = 16.sp
             )
             Text(
                 text = location,
                 fontSize = 12.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Start
+                color = Color.Gray
             )
         }
+        // Botón para navegar a MissingObjectScreen
         Button(
-            onClick = { /* Navegar a detalles del objeto perdido */ },
+            onClick = onDetailsClick,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726))
         ) {
             Text(text = "MÁS DETALLES →", fontSize = 12.sp)
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLostAndFoundScreen() {
-    LostAndFoundScreen()
-}
-
