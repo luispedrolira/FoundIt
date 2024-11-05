@@ -9,6 +9,6 @@ data object SearchDestination
 
 fun NavGraphBuilder.searchScreen(){
     composable<SearchDestination> {
-        SearchRoute()
+
     }
 }

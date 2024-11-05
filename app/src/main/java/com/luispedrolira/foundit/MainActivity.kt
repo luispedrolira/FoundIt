@@ -15,12 +15,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.luispedrolira.foundit.adminapp.signupadmin.signUpAdminNavGraph
-import com.luispedrolira.foundit.app.home.HomeNavigation
 import com.luispedrolira.foundit.app.home.HomeScreen
 import com.luispedrolira.foundit.app.missingObject.MissingObjectScreen
 import com.luispedrolira.foundit.app.search.SearchScreen
 import com.luispedrolira.foundit.app.missingObject.navigateToHome
 import com.luispedrolira.foundit.app.missingObject.navigateToMissingObject
+import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
 import com.luispedrolira.foundit.ui.theme.FoundItTheme
 
 class MainActivity : ComponentActivity() {

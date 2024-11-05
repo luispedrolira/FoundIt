@@ -5,7 +5,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeDestination
 import com.luispedrolira.foundit.app.presentation.mainFlow.profile.ProfileDestination
 import com.luispedrolira.foundit.app.presentation.mainFlow.search.SearchDestination
 
@@ -19,7 +18,7 @@ val navigationItems = listOf(
     NavItem(
         title = "Home",
         icon = Icons.Default.Home,
-        destination = HomeDestination
+        destination = SearchDestination
     ),
     NavItem(
         title = "Buscar",

@@ -1,14 +1,12 @@
 package com.luispedrolira.foundit.app.presentation.mainFlow.home
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
-
 @Serializable
-data object HomeDestination
+sealed class HomeNavigation(val route: String) {
+    @Serializable
+    object Home : HomeNavigation("homeScreen")
 
-fun NavGraphBuilder.homeScreen(){
-    composable<HomeDestination> {
-        HomeRoute()
-    }
+    @Serializable
+    data class Search(val query: String = "") : HomeNavigation("searchScreen?query=$query")
+
 }
