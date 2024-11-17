@@ -14,7 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.luispedrolira.foundit.adminapp.signupadmin.signUpAdminNavGraph
 import com.luispedrolira.foundit.app.home.HomeScreen
 import com.luispedrolira.foundit.app.missingObject.MissingObjectScreen
 import com.luispedrolira.foundit.app.search.SearchScreen
@@ -24,6 +23,7 @@ import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
 import com.luispedrolira.foundit.ui.theme.FoundItTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,12 +36,9 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = "signUpAdminRoute",
+                        startDestination = "homeScreen", // Cambiado a homeScreen
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        // signUpAdmin
-                        signUpAdminNavGraph(navController)
-
                         // HomeScreen
                         composable("homeScreen") {
                             HomeScreen(

@@ -1,3 +1,5 @@
+//ESTA CLASE YA NO SE UTILIZARÁ POR CONVENIENCIA YA QUE EL LOGIN HACE TOD0 !!!!!!!!!
+
 package com.luispedrolira.foundit.adminapp.signupadmin
 
 import androidx.navigation.NavController
