@@ -27,11 +27,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.luispedrolira.foundit.R
 
+
 @Composable
 fun WelcomeRoute(
+    onLoginClick: () -> Unit,
+    onRegisterClick: () -> Unit,
     onWelcomeClick: () -> Unit
-){
+) {
     WelcomeScreen(
+        onLoginClick = onLoginClick,
+        onRegisterClick = onRegisterClick,
         onWelcomeClick = onWelcomeClick,
         modifier = Modifier.fillMaxSize()
     )
@@ -39,11 +44,12 @@ fun WelcomeRoute(
 
 @Composable
 private fun WelcomeScreen(
+    onLoginClick: () -> Unit,
+    onRegisterClick: () -> Unit,
     onWelcomeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-
         // SECCIÓN No 1: Logo de FoundIt
         Box(
             modifier = Modifier
@@ -54,9 +60,7 @@ private fun WelcomeScreen(
                 painter = painterResource(id = R.drawable.logofoundit),
                 contentDescription = "Logo de FoundIt",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-            // TODO: Encontrar la manera para que la imagen se parezca al diseño previsto
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -93,14 +97,13 @@ private fun WelcomeScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-
-            // SECCIÓN No 3: Crear cuenta o inciar sesión
+            // SECCIÓN No 3: Crear cuenta o iniciar sesión
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = {  },
+                    onClick = onLoginClick, // Navega a Log In
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 8.dp)
@@ -109,7 +112,7 @@ private fun WelcomeScreen(
                 }
 
                 Button(
-                    onClick = {  },
+                    onClick = onRegisterClick, // También navega a Log In
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(text = "REGISTRO")
@@ -125,8 +128,8 @@ private fun WelcomeScreen(
 @Composable
 private fun PreviewWelcomeScreen() {
     Surface {
-        WelcomeScreen(
-            onWelcomeClick = { /*TODO*/ }
-        )
+        //WelcomeScreen(
+           // onWelcomeClick = { /*TODO*/ }
+       // )
     }
 }

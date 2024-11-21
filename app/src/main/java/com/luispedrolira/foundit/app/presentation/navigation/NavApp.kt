@@ -17,6 +17,9 @@ import com.luispedrolira.foundit.app.search.SearchScreen
 import com.luispedrolira.foundit.app.missingObject.navigateToHome
 import com.luispedrolira.foundit.app.missingObject.navigateToMissingObject
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
+import com.luispedrolira.foundit.app.presentation.welcome.WelcomeRoute
+import com.luispedrolira.foundit.app.login.LoginRegistrationScreen
+
 
 @Composable
 fun NavApp() {
@@ -28,14 +31,26 @@ fun NavApp() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "homeScreen", // Cambiado a homeScreen
+            startDestination = "welcomeScreen", // Pantalla inicial
             modifier = Modifier.padding(innerPadding)
         ) {
+
+
+            // LogInScreen
+            composable("login") {
+                LoginRegistrationScreen()
+            }
+
+
+            composable("login") {
+                LoginRegistrationScreen()
+            }
+
             // HomeScreen
             composable("homeScreen") {
                 HomeScreen(
                     onNavigateToMissingObject = { category, location, description ->
-                        navController.navigateToMissingObject(category, location, description)
+                        navController.navigate("missingObjectScreen/$category/$location/$description")
                     },
                     onNavigate = { destination ->
                         when (destination) {
@@ -76,7 +91,7 @@ fun NavApp() {
                     category = category,
                     location = location,
                     description = description,
-                    onBackClick = { navController.navigateToHome() }
+                    onBackClick = { navController.navigate("homeScreen") }
                 )
             }
         }

@@ -7,12 +7,3 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object WelcomeDestination
 
-fun NavGraphBuilder.welcomeScreen(
-    onWelcomeClick: () -> Unit
-){
-    composable<WelcomeDestination> {
-        WelcomeRoute(
-            onWelcomeClick = onWelcomeClick
-        )
-    }
-}

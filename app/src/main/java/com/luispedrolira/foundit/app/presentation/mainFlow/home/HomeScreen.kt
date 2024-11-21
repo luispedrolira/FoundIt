@@ -18,6 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
+import androidx.compose.ui.tooling.preview.Preview
+import com.luispedrolira.foundit.R
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+
 
 @Composable
 fun HomeScreen(
@@ -137,27 +143,38 @@ fun PopularCategories(onNavigate: (HomeNavigation) -> Unit) {
             .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Categorías populares con navegación
-        CategoryBox("Cargadores") { onNavigate(HomeNavigation.Search("Cargadores")) }
-        CategoryBox("Mochilas") { onNavigate(HomeNavigation.Search("Mochilas")) }
+        // Categorías populares con imágenes y navegación
+        CategoryImage("Cargadores", R.drawable.cargadores) { onNavigate(HomeNavigation.Search("Cargadores")) }
+        CategoryImage("Mochilas", R.drawable.mochila) { onNavigate(HomeNavigation.Search("Mochilas")) }
     }
 }
 
 @Composable
-fun CategoryBox(title: String, onClick: () -> Unit) {
+fun CategoryImage(title: String, imageRes: Int, onClick: () -> Unit) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(150.dp, 100.dp)
-            .background(Color.Gray, RoundedCornerShape(10.dp))
+            .background(Color(0xFF4DB6AC), RoundedCornerShape(10.dp))
             .clickable { onClick() }
-            .padding(8.dp)
+            .padding(2.dp)
     ) {
+        // Imagen en lugar de texto
+        Image(
+            painter = painterResource(id = imageRes),
+            contentDescription = title,
+            modifier = Modifier
+                .size(150.dp, 100.dp)
+                .clickable { onClick() }
+                .padding(6.dp),
+            contentScale = ContentScale.Crop
+        )
         Text(
             text = title,
             color = Color.White,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.Center)
         )
     }
 }
@@ -203,11 +220,14 @@ fun LostItemBox(
         verticalAlignment = Alignment.Top
     ) {
         // Caja gris como un ícono o imagen
-        Box(
+        Image(
+            painter = painterResource(id = R.drawable.perdido),
+            contentDescription = "Cosas Perdidas",
             modifier = Modifier
                 .size(60.dp)
                 .background(Color.Gray, RoundedCornerShape(10.dp))
         )
+
         Spacer(modifier = Modifier.width(8.dp))
         Column(
             modifier = Modifier.weight(1f)
@@ -232,3 +252,15 @@ fun LostItemBox(
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    // You can pass mock navigation actions as parameters
+    HomeScreen(
+        onNavigate = { /* Handle navigation */ },
+        onNavigateToMissingObject = { _, _, _ -> /* Handle missing object navigation */ }
+    )
+}
+
+
