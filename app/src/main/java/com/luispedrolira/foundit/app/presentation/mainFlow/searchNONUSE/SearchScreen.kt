@@ -1,3 +1,5 @@
+// ESTA CLASE YA NO SE UTILIZARÁ POR DISEÑO
+
 package com.luispedrolira.foundit.app.search
 
 import androidx.compose.foundation.background

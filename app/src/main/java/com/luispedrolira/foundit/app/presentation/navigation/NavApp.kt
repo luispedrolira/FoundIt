@@ -20,6 +20,8 @@ import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
 import com.luispedrolira.foundit.app.presentation.welcome.WelcomeRoute
 import com.luispedrolira.foundit.app.login.LoginRegistrationScreen
 import com.luispedrolira.foundit.app.presentation.mainFlow.profile.UserProfileScreen
+import com.luispedrolira.foundit.app.presentation.mainFlow.profile.ProfileRoute
+
 
 @Composable
 fun NavApp() {
@@ -105,8 +107,20 @@ fun NavApp() {
 
             // ProfileScreen
             composable("profileScreen") {
-                UserProfileScreen(email = "usuario@correo.com") // Cambia el email según corresponda
+                ProfileRoute(
+                    onNavigateToHome = {
+                        navController.navigate("homeScreen") {
+                            popUpTo("homeScreen") { inclusive = true }
+                        }
+                    },
+                    onLogout = {
+                        navController.navigate("welcomeScreen") {
+                            popUpTo("welcomeScreen") { inclusive = true }
+                        }
+                    }
+                )
             }
+
         }
     }
 }

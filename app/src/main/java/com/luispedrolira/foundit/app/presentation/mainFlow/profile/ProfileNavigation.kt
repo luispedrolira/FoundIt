@@ -7,8 +7,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object ProfileDestination
 
-fun NavGraphBuilder.profileScreen(){
+fun NavGraphBuilder.profileScreen(
+    onNavigateToHome: () -> Unit,
+    onLogout: () -> Unit
+) {
     composable<ProfileDestination> {
-        ProfileRoute()
+        ProfileRoute(
+            onNavigateToHome = onNavigateToHome,
+            onLogout = onLogout
+        )
     }
 }
+

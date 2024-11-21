@@ -8,8 +8,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.luispedrolira.foundit.adminapp.presentation.signupadmin.SignUpAdminArgs
-import com.luispedrolira.foundit.adminapp.presentation.signupadmin.SignUpAdminScreen
+import com.luispedrolira.foundit.adminapp.presentation.signupadminNONUSE.SignUpAdminArgs
+import com.luispedrolira.foundit.adminapp.presentation.signupadminNONUSE.SignUpAdminScreen
 import kotlinx.serialization.json.Json
 
 //La navegacion con el serializable estan en la clase del screen.

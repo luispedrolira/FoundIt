@@ -1,6 +1,6 @@
 //ESTA CLASE YA NO SE UTILIZARÁ POR CONVENIENCIA YA QUE EL LOGIN HACE TOD0 !!!!!!!!!
 
-package com.luispedrolira.foundit.adminapp.presentation.signupadmin
+package com.luispedrolira.foundit.adminapp.presentation.signupadminNONUSE
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

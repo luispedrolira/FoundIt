@@ -1,4 +1,6 @@
-package com.luispedrolira.foundit.app.presentation.mainFlow.search
+// ESTA CLASE YA NO SE UTILIZARÁ POR DISEÑO
+
+package com.luispedrolira.foundit.app.presentation.mainFlow.searchNONUSE
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable

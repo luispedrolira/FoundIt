@@ -23,7 +23,10 @@ import com.luispedrolira.foundit.R
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
-
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun HomeScreen(
@@ -41,19 +44,34 @@ fun HomeScreen(
             Text(
                 text = "¡Encuentra tus cosas perdidas!",
                 fontWeight = FontWeight.Medium,
+                fontFamily = FontFamily.SansSerif,
+                textAlign = TextAlign.Center,
+                color = Color(0xFF4DB6AC),
                 fontSize = 20.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
             )
+
 
             Text(
                 text = "FoundIt",
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
-                modifier = Modifier.padding(bottom = 16.dp)
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            )
+            Image(
+                painter = painterResource(id = R.drawable.logofoundit),
+                contentDescription = "Banner Bienvenida",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth().height(150.dp)
             )
 
             // Categorías populares
-            Text(
+           /* Text(
                 text = "Categorías Populares",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
@@ -62,14 +80,14 @@ fun HomeScreen(
 
             PopularCategories(onNavigate)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp)) */
 
             // Objetos perdidos
             Text(
                 text = "Objetos perdidos",
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
+                fontSize = 20.sp,
+                modifier = Modifier.padding(bottom = 10.dp)
             )
 
             LostItemsList(onNavigateToMissingObject)
@@ -86,7 +104,7 @@ fun BottomNavigationBar(onNavigate: (HomeNavigation) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 45.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -106,22 +124,6 @@ fun BottomNavigationBar(onNavigate: (HomeNavigation) -> Unit) {
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(text = "Home", color = Color.Black, fontSize = 14.sp)
-            }
-        }
-
-        // Botón de búsqueda
-        Box(
-            modifier = Modifier
-                .clickable { onNavigate(HomeNavigation.Search("")) }
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Buscar",
-                    tint = Color.Black,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
             }
         }
 
@@ -151,13 +153,15 @@ fun PopularCategories(onNavigate: (HomeNavigation) -> Unit) {
             .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Categorías populares con imágenes y navegación
-        CategoryImage("Cargadores", R.drawable.cargadores) { onNavigate(HomeNavigation.Search("Cargadores")) }
-        CategoryImage("Mochilas", R.drawable.mochila) { onNavigate(HomeNavigation.Search("Mochilas")) }
+        // Categorias populares con imagenes y navegación
+       // CategoryImage("Cargadores", R.drawable.cargadores) { onNavigate(HomeNavigation.Search("Cargadores")) }
+        //CategoryImage("Mochilas", R.drawable.mochila) { onNavigate(HomeNavigation.Search("Mochilas")) }
     }
 }
 
-@Composable
+// DEBIDO A QUE YA NO SE UTILIZARÁ BARRA DE BUSQUEDA, ESTA FUNCIÓN SE ENCUENTRA DE MÁS.
+
+/*@Composable
 fun CategoryImage(title: String, imageRes: Int, onClick: () -> Unit) {
     Box(
         contentAlignment = Alignment.Center,
@@ -185,7 +189,7 @@ fun CategoryImage(title: String, imageRes: Int, onClick: () -> Unit) {
             modifier = Modifier.align(Alignment.Center)
         )
     }
-}
+}*/
 
 @Composable
 fun LostItemsList(
@@ -254,13 +258,17 @@ fun LostItemBox(
         // Botón para navegar a MissingObjectScreen
         Button(
             onClick = onDetailsClick,
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
+            shape = RoundedCornerShape(16.dp),
+            elevation = ButtonDefaults.elevatedButtonElevation(4.dp)
+
         ) {
             Text(text = "MÁS DETALLES →", fontSize = 12.sp)
         }
     }
 }
 
+//Le pedí ayuda a chat que me generará un Preview
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {

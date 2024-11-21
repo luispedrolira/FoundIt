@@ -6,7 +6,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.luispedrolira.foundit.app.presentation.mainFlow.profile.ProfileDestination
-import com.luispedrolira.foundit.app.presentation.mainFlow.search.SearchDestination
+import com.luispedrolira.foundit.app.presentation.mainFlow.searchNONUSE.SearchDestination
 
 data class NavItem(
     val title: String,
