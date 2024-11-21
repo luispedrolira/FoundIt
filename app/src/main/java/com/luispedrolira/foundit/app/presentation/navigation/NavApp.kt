@@ -20,7 +20,6 @@ import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
 import com.luispedrolira.foundit.app.presentation.welcome.WelcomeRoute
 import com.luispedrolira.foundit.app.login.LoginRegistrationScreen
 
-
 @Composable
 fun NavApp() {
     val navController = rememberNavController()
@@ -34,16 +33,21 @@ fun NavApp() {
             startDestination = "welcomeScreen", // Pantalla inicial
             modifier = Modifier.padding(innerPadding)
         ) {
-
+            // WelcomeScreen
+            composable("welcomeScreen") {
+                WelcomeRoute(
+                    onLoginClick = {
+                        navController.navigate("login") // Esta función ya no se utilizará, se elimino el button.
+                    },
+                    onRegisterClick = {
+                        navController.navigate("login") //  navega a la pantalla de login
+                    }
+                )
+            }
 
             // LogInScreen
             composable("login") {
-                LoginRegistrationScreen()
-            }
-
-
-            composable("login") {
-                LoginRegistrationScreen()
+                LoginRegistrationScreen(navController = navController) // Se pasa el navController aquí
             }
 
             // HomeScreen

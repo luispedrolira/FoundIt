@@ -12,10 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposableInferredTarget
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,21 +21,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.luispedrolira.foundit.R
 
-
 @Composable
 fun WelcomeRoute(
-    onLoginClick: () -> Unit,
-    onRegisterClick: () -> Unit,
-    onWelcomeClick: () -> Unit
+    onLoginClick: () -> Unit, // Esta función ya no se utilizará, se elimino el button.
+    onRegisterClick: () -> Unit
 ) {
     WelcomeScreen(
-        onLoginClick = onLoginClick,
+        onLoginClick = onLoginClick, // Esta función ya no se utilizará, se elimino el button.
         onRegisterClick = onRegisterClick,
-        onWelcomeClick = onWelcomeClick,
         modifier = Modifier.fillMaxSize()
     )
 }
@@ -46,7 +40,6 @@ fun WelcomeRoute(
 private fun WelcomeScreen(
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
-    onWelcomeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -68,7 +61,7 @@ private fun WelcomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f) // Esta sección toma menos espacio
+                .weight(1f)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -103,33 +96,12 @@ private fun WelcomeScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = onLoginClick, // Navega a Log In
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp)
-                ) {
-                    Text(text = "LOG IN")
-                }
-
-                Button(
-                    onClick = onRegisterClick, // También navega a Log In
+                    onClick = onRegisterClick, // Navega al Registro
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = "REGISTRO")
+                    Text(text = "REGISTRATE")
                 }
             }
         }
-    }
-}
-
-
-
-@Preview
-@Composable
-private fun PreviewWelcomeScreen() {
-    Surface {
-        //WelcomeScreen(
-           // onWelcomeClick = { /*TODO*/ }
-       // )
     }
 }

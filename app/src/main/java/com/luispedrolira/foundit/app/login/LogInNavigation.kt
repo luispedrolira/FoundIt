@@ -4,9 +4,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-fun NavGraphBuilder.loginNavigation() {
+fun NavGraphBuilder.loginNavigation(navController: NavController) {
     composable("login") {
-        LoginRegistrationScreen()
+        LoginRegistrationScreen(navController = navController) // Se pasa el NavController
     }
 }
 
