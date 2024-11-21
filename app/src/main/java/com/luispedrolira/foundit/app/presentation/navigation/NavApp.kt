@@ -19,6 +19,7 @@ import com.luispedrolira.foundit.app.missingObject.navigateToMissingObject
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
 import com.luispedrolira.foundit.app.presentation.welcome.WelcomeRoute
 import com.luispedrolira.foundit.app.login.LoginRegistrationScreen
+import com.luispedrolira.foundit.app.presentation.mainFlow.profile.UserProfileScreen
 
 @Composable
 fun NavApp() {
@@ -37,10 +38,10 @@ fun NavApp() {
             composable("welcomeScreen") {
                 WelcomeRoute(
                     onLoginClick = {
-                        navController.navigate("login") // Esta función ya no se utilizará, se elimino el button.
+                        navController.navigate("login") // Navega a login
                     },
                     onRegisterClick = {
-                        navController.navigate("login") //  navega a la pantalla de login
+                        navController.navigate("login") // También navega a login
                     }
                 )
             }
@@ -63,6 +64,9 @@ fun NavApp() {
                             }
                             is HomeNavigation.Home -> {
                                 navController.popBackStack("homeScreen", false)
+                            }
+                            is HomeNavigation.Profile -> { // Nueva navegación al perfil
+                                navController.navigate("profileScreen")
                             }
                         }
                     }
@@ -98,6 +102,12 @@ fun NavApp() {
                     onBackClick = { navController.navigate("homeScreen") }
                 )
             }
+
+            // ProfileScreen
+            composable("profileScreen") {
+                UserProfileScreen(email = "usuario@correo.com") // Cambia el email según corresponda
+            }
         }
     }
 }
+

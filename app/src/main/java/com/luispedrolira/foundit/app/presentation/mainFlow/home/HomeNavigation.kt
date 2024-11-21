@@ -9,4 +9,6 @@ sealed class HomeNavigation(val route: String) {
     @Serializable
     data class Search(val query: String = "") : HomeNavigation("searchScreen?query=$query")
 
+    @Serializable
+    object Profile : HomeNavigation("profileScreen")
 }

@@ -126,12 +126,20 @@ fun BottomNavigationBar(onNavigate: (HomeNavigation) -> Unit) {
         }
 
         // Botón de perfil
-        Icon(
-            imageVector = Icons.Default.Person,
-            contentDescription = "Perfil",
-            tint = Color.Black,
-            modifier = Modifier.size(28.dp)
-        )
+        Box(
+            modifier = Modifier
+                .clickable { onNavigate(HomeNavigation.Profile) }
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Perfil",
+                    tint = Color.Black,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+        }
     }
 }
 
@@ -256,7 +264,6 @@ fun LostItemBox(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    // You can pass mock navigation actions as parameters
     HomeScreen(
         onNavigate = { /* Handle navigation */ },
         onNavigateToMissingObject = { _, _, _ -> /* Handle missing object navigation */ }
