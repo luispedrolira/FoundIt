@@ -1,4 +1,4 @@
-package com.luispedrolira.foundit.adminapp.dashboard
+package com.luispedrolira.foundit.adminapp.presentation.dashboard
 
 import kotlinx.serialization.Serializable
 

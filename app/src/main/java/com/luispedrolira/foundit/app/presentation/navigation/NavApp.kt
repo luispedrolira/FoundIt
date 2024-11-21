@@ -11,12 +11,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.luispedrolira.foundit.app.home.HomeScreen
+import com.luispedrolira.foundit.adminapp.presentation.adminAppNavGraph
+import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeScreen
+import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
 import com.luispedrolira.foundit.app.missingObject.MissingObjectScreen
 import com.luispedrolira.foundit.app.search.SearchScreen
 import com.luispedrolira.foundit.app.missingObject.navigateToHome
 import com.luispedrolira.foundit.app.missingObject.navigateToMissingObject
-import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
 
 @Composable
 fun NavApp() {
@@ -28,7 +29,7 @@ fun NavApp() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "homeScreen", // Cambiado a homeScreen
+            startDestination = "homeScreen", // Inicio en Home
             modifier = Modifier.padding(innerPadding)
         ) {
             // HomeScreen
@@ -37,7 +38,7 @@ fun NavApp() {
                     onNavigateToMissingObject = { category, location, description ->
                         navController.navigateToMissingObject(category, location, description)
                     },
-                    onNavigate = { destination ->
+                    onNavigate = { destination: HomeNavigation ->
                         when (destination) {
                             is HomeNavigation.Search -> {
                                 navController.navigate("searchScreen?query=${destination.query}")
@@ -79,6 +80,9 @@ fun NavApp() {
                     onBackClick = { navController.navigateToHome() }
                 )
             }
+
+            // AdminApp Navigation (Dashboard y NewObject)
+            adminAppNavGraph(navController)
         }
     }
 }
