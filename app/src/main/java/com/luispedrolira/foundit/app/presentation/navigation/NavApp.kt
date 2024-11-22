@@ -14,12 +14,9 @@ import androidx.navigation.navArgument
 import com.luispedrolira.foundit.app.home.HomeScreen
 import com.luispedrolira.foundit.app.missingObject.MissingObjectScreen
 import com.luispedrolira.foundit.app.search.SearchScreen
-import com.luispedrolira.foundit.app.missingObject.navigateToHome
-import com.luispedrolira.foundit.app.missingObject.navigateToMissingObject
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
 import com.luispedrolira.foundit.app.presentation.welcome.WelcomeRoute
-import com.luispedrolira.foundit.app.login.LoginRegistrationScreen
-import com.luispedrolira.foundit.app.presentation.mainFlow.profile.UserProfileScreen
+import com.luispedrolira.foundit.app.presentation.login.LoginRegistrationScreen
 import com.luispedrolira.foundit.app.presentation.mainFlow.profile.ProfileRoute
 import com.luispedrolira.foundit.adminapp.presentation.dashboard.DashboardContent1
 import com.luispedrolira.foundit.adminapp.presentation.newobject.NewObjectContent

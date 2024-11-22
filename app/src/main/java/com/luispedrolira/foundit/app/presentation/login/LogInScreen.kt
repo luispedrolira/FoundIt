@@ -1,4 +1,4 @@
-package com.luispedrolira.foundit.app.login
+package com.luispedrolira.foundit.app.presentation.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,7 +12,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun LoginRegistrationScreen(navController: NavController) {
@@ -139,17 +138,14 @@ fun LoginScreen(onLoginSuccess: (Boolean) -> Unit) {
 
         Button(
             onClick = {
+                val emailRegex = Regex("^[a-zA-Z0-9._%+-]+@uvg\\.edu\\.gt$")
                 when {
-                    email.text.matches(Regex("^[a-zA-Z]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$")) -> {
-                        // Es administrador
-                        onLoginSuccess(true)
-                    }
-                    email.text.matches(Regex("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$")) -> {
-                        // Es estudiante
-                        onLoginSuccess(false)
+                    email.text.matches(emailRegex) -> {
+                        // Login success: ejemplo de validación para dominio uvg.edu.gt
+                        onLoginSuccess(false) // Puedes agregar más lógica para roles aquí
                     }
                     else -> {
-                        errorMessage = "Formato de email inválido. Verifica tu ingreso."
+                        errorMessage = "Formato de email inválido. Usa un correo tipo vel221181@uvg.edu.gt"
                     }
                 }
             },
