@@ -36,7 +36,7 @@ fun HomeScreen(
         Column {
             // Logo de la app
             Image(
-                painter = painterResource(id = R.drawable.logofoundit), // Asegúrate de usar el ID correcto
+                painter = painterResource(id = R.drawable.logofoundit),
                 contentDescription = "Logo de FoundIt",
                 modifier = Modifier
                     .size(80.dp)
@@ -84,6 +84,8 @@ fun HomeScreen(
 
 @Composable
 fun BottomNavigationBar(onNavigate: (HomeNavigation) -> Unit) {
+    val customHomeColor = Color(0xFF4DB6AC)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -95,7 +97,7 @@ fun BottomNavigationBar(onNavigate: (HomeNavigation) -> Unit) {
         // Botón de Home
         Box(
             modifier = Modifier
-                .background(Color(0xFF4DB6AC), RoundedCornerShape(50)) // Color actualizado
+                .background(customHomeColor, RoundedCornerShape(50))
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .clickable { onNavigate(HomeNavigation.Home) },
             contentAlignment = Alignment.Center
@@ -183,12 +185,12 @@ fun LostItemBox(
                     text = title,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
-                    color = Color.Black // Letras en negro
+                    color = Color.Black
                 )
                 Text(
                     text = location,
                     fontSize = 14.sp,
-                    color = Color.Black // Letras en negro
+                    color = Color(0xFF333333) // Color más opaco que el negro
                 )
             }
 
