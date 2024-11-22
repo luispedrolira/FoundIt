@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
@@ -11,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.luispedrolira.foundit.app.home.HomeScreen
+import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeScreen
 import com.luispedrolira.foundit.app.missingObject.MissingObjectScreen
 import com.luispedrolira.foundit.app.search.SearchScreen
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
@@ -20,6 +21,10 @@ import com.luispedrolira.foundit.app.presentation.login.LoginRegistrationScreen
 import com.luispedrolira.foundit.app.presentation.mainFlow.profile.ProfileRoute
 import com.luispedrolira.foundit.adminapp.presentation.dashboard.DashboardContent1
 import com.luispedrolira.foundit.adminapp.presentation.newobject.NewObjectContent
+import com.luispedrolira.foundit.adminapp.presentation.dashboard.Objeto
+
+// Lista mutable compartida entre pantallas para objetos encontrados
+val objetos = mutableStateListOf<Objeto>()
 
 @Composable
 fun NavApp() {
@@ -31,36 +36,32 @@ fun NavApp() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "welcomeScreen", // Pantalla inicial
+            startDestination = "welcomeScreen",
             modifier = Modifier.padding(innerPadding)
         ) {
-            // WelcomeScreen
+            // Pantalla de bienvenida
             composable("welcomeScreen") {
                 WelcomeRoute(
-                    onLoginClick = {
-                        navController.navigate("login") // Navega a login
-                    },
-                    onRegisterClick = {
-                        navController.navigate("login") // También navega a login
-                    }
+                    onLoginClick = { navController.navigate("login") },
+                    onRegisterClick = { navController.navigate("login") }
                 )
             }
 
-            // LogInScreen
+            // Pantalla de inicio de sesión
             composable("login") {
                 LoginRegistrationScreen(
                     navController = navController,
                     onLoginSuccess = { isAdmin ->
                         if (isAdmin) {
-                            navController.navigate("dashboardScreen") // Navegar a pantalla de administrador
+                            navController.navigate("dashboardScreen")
                         } else {
-                            navController.navigate("homeScreen") // Navegar a pantalla de estudiante
+                            navController.navigate("homeScreen")
                         }
                     }
                 )
             }
 
-            // HomeScreen
+            // Pantalla principal (Home)
             composable("homeScreen") {
                 HomeScreen(
                     onNavigateToMissingObject = { category, location, description ->
@@ -68,23 +69,15 @@ fun NavApp() {
                     },
                     onNavigate = { destination ->
                         when (destination) {
-                            is HomeNavigation.Search -> {
-                                navController.navigate("searchScreen?query=${destination.query}")
-                            }
-
-                            is HomeNavigation.Home -> {
-                                navController.popBackStack("homeScreen", false)
-                            }
-
-                            is HomeNavigation.Profile -> { // Nueva navegación al perfil
-                                navController.navigate("profileScreen")
-                            }
+                            is HomeNavigation.Search -> navController.navigate("searchScreen?query=${destination.query}")
+                            is HomeNavigation.Home -> navController.popBackStack("homeScreen", false)
+                            is HomeNavigation.Profile -> navController.navigate("profileScreen")
                         }
                     }
                 )
             }
 
-            // SearchScreen
+            // Pantalla de búsqueda
             composable(
                 route = "searchScreen?query={query}",
                 arguments = listOf(navArgument("query") { type = NavType.StringType })
@@ -93,7 +86,7 @@ fun NavApp() {
                 SearchScreen(query)
             }
 
-            // MissingObjectScreen
+            // Pantalla de detalles de objetos perdidos
             composable(
                 route = "missingObjectScreen/{category}/{location}/{description}",
                 arguments = listOf(
@@ -114,7 +107,7 @@ fun NavApp() {
                 )
             }
 
-            // ProfileScreen
+            // Pantalla de perfil
             composable("profileScreen") {
                 ProfileRoute(
                     onNavigateToHome = {
@@ -130,16 +123,22 @@ fun NavApp() {
                 )
             }
 
-            // DashboardScreen para administradores
+            // Pantalla del administrador (Dashboard)
             composable("dashboardScreen") {
-                DashboardContent1(navController = navController)
+                DashboardContent1(
+                    navController = navController,
+                    objeto = objetos
+                )
             }
 
-            // NewObjectScreen para agregar objetos nuevos
+            // Pantalla para agregar nuevos objetos
             composable("newObject") {
                 NewObjectContent(
                     onBackClick = { navController.popBackStack() },
-                    navController = navController
+                    navController = navController,
+                    addObject = { newObject ->
+                        objetos.add(newObject) // Agregar el objeto a la lista compartida
+                    }
                 )
             }
         }
