@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1029697594800",
+    "project_id": "fountit-5e097",
+    "storage_bucket": "fountit-5e097.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029697594800:android:e1dde7bcf092013339e275",
+        "android_client_info": {
+          "package_name": "com.luispedrolira.foundit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR3XOUjsiMCSrBtwTlJUN4_QHda4XeR2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
