@@ -14,10 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 @Composable
-fun LoginRegistrationScreen(
-    navController: NavController,
-    onLoginSuccess: (Boolean) -> Unit
-) {
+fun LoginRegistrationScreen(navController: NavController) {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Registro", "Log in")
 
@@ -34,7 +31,15 @@ fun LoginRegistrationScreen(
 
         when (selectedTabIndex) {
             0 -> RegistroScreen(onNextClick = { selectedTabIndex = 1 })
-            1 -> LoginScreen(onLoginSuccess = onLoginSuccess)
+            1 -> LoginScreen(
+                onLoginSuccess = { isAdmin ->
+                    if (isAdmin) {
+                        navController.navigate("dashboardScreen")
+                    } else {
+                        navController.navigate("homeScreen")
+                    }
+                }
+            )
         }
     }
 }
@@ -61,9 +66,7 @@ fun RegistroScreen(onNextClick: () -> Unit) {
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
@@ -71,23 +74,20 @@ fun RegistroScreen(onNextClick: () -> Unit) {
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = PasswordVisualTransformation()
         )
 
         Button(
             onClick = onNextClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp)
+            modifier = Modifier.fillMaxWidth().height(48.dp)
         ) {
             Text(text = "NEXT")
         }
     }
 }
+
 
 @Composable
 fun LoginScreen(onLoginSuccess: (Boolean) -> Unit) {
@@ -115,9 +115,7 @@ fun LoginScreen(onLoginSuccess: (Boolean) -> Unit) {
                 errorMessage = "" // Reset error message when email changes
             },
             label = { Text("Email") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
@@ -125,9 +123,7 @@ fun LoginScreen(onLoginSuccess: (Boolean) -> Unit) {
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = PasswordVisualTransformation()
         )
@@ -142,24 +138,18 @@ fun LoginScreen(onLoginSuccess: (Boolean) -> Unit) {
 
         Button(
             onClick = {
-                val adminRegex = Regex("^[a-zA-Z0-9._%+-]+@admin\\.uvg\\.edu\\.gt$")
-                val studentRegex = Regex("^[a-zA-Z0-9._%+-]+@uvg\\.edu\\.gt$")
-
+                val emailRegex = Regex("^[a-zA-Z0-9._%+-]+@uvg\\.edu\\.gt$")
                 when {
-                    email.text.matches(adminRegex) -> {
-                        onLoginSuccess(true) // Administrador
-                    }
-                    email.text.matches(studentRegex) -> {
-                        onLoginSuccess(false) // Estudiante
+                    email.text.matches(emailRegex) -> {
+                        // Login success: ejemplo de validación para dominio uvg.edu.gt
+                        onLoginSuccess(false) // Puedes agregar más lógica para roles aquí
                     }
                     else -> {
-                        errorMessage = "Formato de email inválido. Usa @uvg.edu.gt o @admin.uvg.edu.gt"
+                        errorMessage = "Formato de email inválido. Usa un correo tipo vel221181@uvg.edu.gt"
                     }
                 }
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp)
+            modifier = Modifier.fillMaxWidth().height(48.dp)
         ) {
             Text(text = "LOG IN")
         }

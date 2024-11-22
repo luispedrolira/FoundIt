@@ -22,8 +22,12 @@ fun NavHostController.navigateToHome() {
     this.navigate(MissingObjectNavigation.Home.route)
 }
 
-fun NavHostController.navigateToMissingObject(category: String, location: String, description: String) {
+fun NavHostController.navigateToMissingObject(
+    viewModel: MissingObjectViewModel,
+    category: String,
+    location: String,
+    description: String
+) {
+    viewModel.updateMissingObject(category, location, description)
     this.navigate(MissingObjectNavigation.MissingObject(category, location, description).createRoute())
 }
-
-

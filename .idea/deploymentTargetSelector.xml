@@ -2,10 +2,17 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
+      <SelectionState runConfigName="App">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+<<<<<<< HEAD
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MainActivity">
+      <SelectionState runConfigName="AndroidStudioProjects.FoundIt.app">
+=======
+      <SelectionState runConfigName="HomeScreenPreview">
+>>>>>>> 6480a1b0c8df75aabc46d27c7fe3fac219780bcb
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

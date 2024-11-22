@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
@@ -12,7 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeScreen
+import com.luispedrolira.foundit.app.home.HomeScreen
 import com.luispedrolira.foundit.app.missingObject.MissingObjectScreen
 import com.luispedrolira.foundit.app.search.SearchScreen
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
@@ -21,10 +20,7 @@ import com.luispedrolira.foundit.app.presentation.login.LoginRegistrationScreen
 import com.luispedrolira.foundit.app.presentation.mainFlow.profile.ProfileRoute
 import com.luispedrolira.foundit.adminapp.presentation.dashboard.DashboardContent1
 import com.luispedrolira.foundit.adminapp.presentation.newobject.NewObjectContent
-import com.luispedrolira.foundit.adminapp.presentation.dashboard.Objeto
 
-// Lista mutable compartida entre pantallas para objetos encontrados
-val objetos = mutableStateListOf<Objeto>()
 
 @Composable
 fun NavApp() {
@@ -36,32 +32,27 @@ fun NavApp() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "welcomeScreen",
+            startDestination = "welcomeScreen", // Pantalla inicial
             modifier = Modifier.padding(innerPadding)
         ) {
-            // Pantalla de bienvenida
+            // WelcomeScreen
             composable("welcomeScreen") {
                 WelcomeRoute(
-                    onLoginClick = { navController.navigate("login") },
-                    onRegisterClick = { navController.navigate("login") }
-                )
-            }
-
-            // Pantalla de inicio de sesión
-            composable("login") {
-                LoginRegistrationScreen(
-                    navController = navController,
-                    onLoginSuccess = { isAdmin ->
-                        if (isAdmin) {
-                            navController.navigate("dashboardScreen")
-                        } else {
-                            navController.navigate("homeScreen")
-                        }
+                    onLoginClick = {
+                        navController.navigate("login") // Navega a login
+                    },
+                    onRegisterClick = {
+                        navController.navigate("login") // También navega a login
                     }
                 )
             }
 
-            // Pantalla principal (Home)
+            // LogInScreen
+            composable("login") {
+                LoginRegistrationScreen(navController = navController) // Se pasa el navController aquí
+            }
+
+            // HomeScreen
             composable("homeScreen") {
                 HomeScreen(
                     onNavigateToMissingObject = { category, location, description ->
@@ -69,15 +60,23 @@ fun NavApp() {
                     },
                     onNavigate = { destination ->
                         when (destination) {
-                            is HomeNavigation.Search -> navController.navigate("searchScreen?query=${destination.query}")
-                            is HomeNavigation.Home -> navController.popBackStack("homeScreen", false)
-                            is HomeNavigation.Profile -> navController.navigate("profileScreen")
+                            is HomeNavigation.Search -> {
+                                navController.navigate("searchScreen?query=${destination.query}")
+                            }
+
+                            is HomeNavigation.Home -> {
+                                navController.popBackStack("homeScreen", false)
+                            }
+
+                            is HomeNavigation.Profile -> { // Nueva navegación al perfil
+                                navController.navigate("profileScreen")
+                            }
                         }
                     }
                 )
             }
 
-            // Pantalla de búsqueda
+            // SearchScreen
             composable(
                 route = "searchScreen?query={query}",
                 arguments = listOf(navArgument("query") { type = NavType.StringType })
@@ -86,7 +85,7 @@ fun NavApp() {
                 SearchScreen(query)
             }
 
-            // Pantalla de detalles de objetos perdidos
+            // MissingObjectScreen
             composable(
                 route = "missingObjectScreen/{category}/{location}/{description}",
                 arguments = listOf(
@@ -107,7 +106,7 @@ fun NavApp() {
                 )
             }
 
-            // Pantalla de perfil
+            // ProfileScreen
             composable("profileScreen") {
                 ProfileRoute(
                     onNavigateToHome = {
@@ -123,24 +122,18 @@ fun NavApp() {
                 )
             }
 
-            // Pantalla del administrador (Dashboard)
             composable("dashboardScreen") {
-                DashboardContent1(
-                    navController = navController,
-                    objeto = objetos
-                )
+                DashboardContent1(navController = navController)
             }
 
-            // Pantalla para agregar nuevos objetos
             composable("newObject") {
                 NewObjectContent(
                     onBackClick = { navController.popBackStack() },
-                    navController = navController,
-                    addObject = { newObject ->
-                        objetos.add(newObject) // Agregar el objeto a la lista compartida
-                    }
+                    navController = navController
                 )
             }
         }
     }
 }
+
+
