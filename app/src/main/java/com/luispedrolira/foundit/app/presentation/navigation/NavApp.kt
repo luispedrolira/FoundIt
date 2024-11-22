@@ -21,7 +21,6 @@ import com.luispedrolira.foundit.app.presentation.mainFlow.profile.ProfileRoute
 import com.luispedrolira.foundit.adminapp.presentation.dashboard.DashboardContent1
 import com.luispedrolira.foundit.adminapp.presentation.newobject.NewObjectContent
 
-
 @Composable
 fun NavApp() {
     val navController = rememberNavController()
@@ -49,7 +48,16 @@ fun NavApp() {
 
             // LogInScreen
             composable("login") {
-                LoginRegistrationScreen(navController = navController) // Se pasa el navController aquí
+                LoginRegistrationScreen(
+                    navController = navController,
+                    onLoginSuccess = { isAdmin ->
+                        if (isAdmin) {
+                            navController.navigate("dashboardScreen") // Navegar a pantalla de administrador
+                        } else {
+                            navController.navigate("homeScreen") // Navegar a pantalla de estudiante
+                        }
+                    }
+                )
             }
 
             // HomeScreen
@@ -122,10 +130,12 @@ fun NavApp() {
                 )
             }
 
+            // DashboardScreen para administradores
             composable("dashboardScreen") {
                 DashboardContent1(navController = navController)
             }
 
+            // NewObjectScreen para agregar objetos nuevos
             composable("newObject") {
                 NewObjectContent(
                     onBackClick = { navController.popBackStack() },
@@ -135,5 +145,3 @@ fun NavApp() {
         }
     }
 }
-
-
