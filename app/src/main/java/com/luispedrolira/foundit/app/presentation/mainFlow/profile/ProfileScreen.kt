@@ -34,7 +34,7 @@ import androidx.compose.foundation.Image
 @Composable
 fun ProfileRoute(onNavigateToHome: () -> Unit, onLogout: () -> Unit) {
     UserProfileScreen(
-        email = "usuario@correo.com",
+        email = "",
         onNavigateToHome = onNavigateToHome,
         onLogout = onLogout
     )

@@ -21,12 +21,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.luispedrolira.foundit.R
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
+import com.luispedrolira.foundit.app.domain.model.LostItem
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeViewModel
 import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeUiState
-import com.luispedrolira.foundit.app.presentation.mainFlow.home.LostItem
 
 
 @Composable
@@ -36,6 +37,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val lostItems by viewModel.lostItems.collectAsState()
 
     Column(
         modifier = Modifier
@@ -79,7 +81,9 @@ fun HomeScreen(
                         painter = painterResource(id = R.drawable.logofoundit),
                         contentDescription = "Banner Bienvenida",
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxWidth().height(150.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp)
                     )
 
                     // Objetos perdidos
@@ -135,10 +139,10 @@ fun LostItemsList(
     ) {
         items.forEach { item ->
             LostItemBox(
-                title = item.title,
+                name = item.name,
                 location = item.location,
                 onDetailsClick = {
-                    onNavigateToMissingObject(item.title, item.location, item.description)
+                    onNavigateToMissingObject(item.name, item.location, item.description)
                 }
             )
         }
@@ -147,7 +151,7 @@ fun LostItemsList(
 
 @Composable
 fun LostItemBox(
-    title: String,
+    name: String,
     location: String,
     onDetailsClick: () -> Unit
 ) {
@@ -172,7 +176,7 @@ fun LostItemBox(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = title,
+                text = name,
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp
             )
