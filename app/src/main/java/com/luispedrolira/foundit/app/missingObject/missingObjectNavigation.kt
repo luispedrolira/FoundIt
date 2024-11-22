@@ -31,5 +31,3 @@ fun NavHostController.navigateToMissingObject(
     viewModel.updateMissingObject(category, location, description)
     this.navigate(MissingObjectNavigation.MissingObject(category, location, description).createRoute())
 }
-
-
