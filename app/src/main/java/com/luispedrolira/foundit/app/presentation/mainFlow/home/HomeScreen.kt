@@ -1,223 +1,150 @@
 package com.luispedrolira.foundit.app.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.luispedrolira.foundit.R
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.style.TextAlign
+import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeNavigation
+import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeViewModel
+import com.luispedrolira.foundit.app.presentation.mainFlow.home.HomeUiState
+import com.luispedrolira.foundit.app.presentation.mainFlow.home.LostItem
+
 
 @Composable
 fun HomeScreen(
     onNavigate: (HomeNavigation) -> Unit,
-    onNavigateToMissingObject: (String, String, String) -> Unit
+    onNavigateToMissingObject: (String, String, String) -> Unit,
+    viewModel: HomeViewModel = viewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column {
-            // Título superior
-            Text(
-                text = "¡Encuentra tus cosas perdidas!",
-                fontWeight = FontWeight.Medium,
-                fontFamily = FontFamily.SansSerif,
-                textAlign = TextAlign.Center,
-                color = Color(0xFF4DB6AC),
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-            )
+        when (uiState) {
+            is HomeUiState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+            is HomeUiState.Success -> {
+                Column {
+                    Text(
+                        text = "¡Encuentra tus cosas perdidas!",
+                        fontWeight = FontWeight.Medium,
+                        fontFamily = FontFamily.SansSerif,
+                        textAlign = TextAlign.Center,
+                        color = Color(0xFF4DB6AC),
+                        fontSize = 20.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                    )
 
+                    Text(
+                        text = "FoundIt",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.logofoundit),
+                        contentDescription = "Banner Bienvenida",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxWidth().height(150.dp)
+                    )
 
-            Text(
-                text = "FoundIt",
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.logofoundit),
-                contentDescription = "Banner Bienvenida",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth().height(150.dp)
-            )
+                    // Objetos perdidos
+                    Text(
+                        text = "Objetos perdidos",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        modifier = Modifier.padding(bottom = 10.dp)
+                    )
 
-            // Categorías populares
-           /* Text(
-                text = "Categorías Populares",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            PopularCategories(onNavigate)
-
-            Spacer(modifier = Modifier.height(16.dp)) */
-
-            // Objetos perdidos
-            Text(
-                text = "Objetos perdidos",
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(bottom = 10.dp)
-            )
-
-            LostItemsList(onNavigateToMissingObject)
+                    LostItemsList(
+                        items = (uiState as HomeUiState.Success).items,
+                        onNavigateToMissingObject = onNavigateToMissingObject
+                    )
+                }
+            }
+            is HomeUiState.Error -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = (uiState as HomeUiState.Error).message,
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+            else -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Estado desconocido",
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
-
-        // Barra de navegación inferior
         BottomNavigationBar(onNavigate)
     }
 }
 
 @Composable
-fun BottomNavigationBar(onNavigate: (HomeNavigation) -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
-            .padding(horizontal = 45.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // Botón de Home
-        Box(
-            modifier = Modifier
-                .background(Color(0xFF4DB6AC), CircleShape) // Color turquesa
-                .padding(12.dp)
-                .clickable { onNavigate(HomeNavigation.Home) }
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = "Home",
-                    tint = Color.Black,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "Home", color = Color.Black, fontSize = 14.sp)
-            }
-        }
-
-        // Botón de perfil
-        Box(
-            modifier = Modifier
-                .clickable { onNavigate(HomeNavigation.Profile) }
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "Perfil",
-                    tint = Color.Black,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-            }
-        }
-    }
-}
-
-@Composable
-fun PopularCategories(onNavigate: (HomeNavigation) -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        // Categorias populares con imagenes y navegación
-       // CategoryImage("Cargadores", R.drawable.cargadores) { onNavigate(HomeNavigation.Search("Cargadores")) }
-        //CategoryImage("Mochilas", R.drawable.mochila) { onNavigate(HomeNavigation.Search("Mochilas")) }
-    }
-}
-
-// DEBIDO A QUE YA NO SE UTILIZARÁ BARRA DE BUSQUEDA, ESTA FUNCIÓN SE ENCUENTRA DE MÁS.
-
-/*@Composable
-fun CategoryImage(title: String, imageRes: Int, onClick: () -> Unit) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .size(150.dp, 100.dp)
-            .background(Color(0xFF4DB6AC), RoundedCornerShape(10.dp))
-            .clickable { onClick() }
-            .padding(2.dp)
-    ) {
-        // Imagen en lugar de texto
-        Image(
-            painter = painterResource(id = imageRes),
-            contentDescription = title,
-            modifier = Modifier
-                .size(150.dp, 100.dp)
-                .clickable { onClick() }
-                .padding(6.dp),
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = title,
-            color = Color.White,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}*/
-
-@Composable
 fun LostItemsList(
+    items: List<LostItem>,
     onNavigateToMissingObject: (String, String, String) -> Unit
 ) {
-    // Ejemplo de elementos de la lista de objetos perdidos
-    val items = listOf(
-        "Mochila negra" to "Encontrado en biblioteca 10:30 am",
-        "Audífonos Samsung" to "Encontrado en cafetería",
-        "Teléfono plegable" to "Encontrado en sala de estudio"
-    )
-
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items.forEach { item ->
             LostItemBox(
-                title = item.first,
-                location = item.second,
+                title = item.title,
+                location = item.location,
                 onDetailsClick = {
-                    onNavigateToMissingObject(item.first, item.second, "Descripción del objeto")
+                    onNavigateToMissingObject(item.title, item.location, item.description)
                 }
             )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LostItemBox(
     title: String,
@@ -261,21 +188,54 @@ fun LostItemBox(
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
             shape = RoundedCornerShape(16.dp),
             elevation = ButtonDefaults.elevatedButtonElevation(4.dp)
-
         ) {
             Text(text = "MÁS DETALLES →", fontSize = 12.sp)
         }
     }
 }
 
-//Le pedí ayuda a chat que me generará un Preview
-@Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() {
-    HomeScreen(
-        onNavigate = { /* Handle navigation */ },
-        onNavigateToMissingObject = { _, _, _ -> /* Handle missing object navigation */ }
-    )
+fun BottomNavigationBar(onNavigate: (HomeNavigation) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
+            .padding(horizontal = 45.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Botón de Home
+        Box(
+            modifier = Modifier
+                .background(Color(0xFF4DB6AC), CircleShape)
+                .padding(12.dp)
+                .clickable { onNavigate(HomeNavigation.Home) }
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "Home",
+                    tint = Color.Black,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = "Home", color = Color.Black, fontSize = 14.sp)
+            }
+        }
+
+        // Botón de perfil
+        Box(
+            modifier = Modifier
+                .clickable { onNavigate(HomeNavigation.Profile) }
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Perfil",
+                    tint = Color.Black,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+    }
 }
-
-
