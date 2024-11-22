@@ -36,10 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.luispedrolira.foundit.R
 import com.luispedrolira.foundit.adminapp.dashboard.Objeto
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardContent1(onObjectClick: (Objeto) -> Unit) {
+fun DashboardContent1(navController: NavController) {
     val objetos = remember {
         mutableStateListOf(
             Objeto("Mochila", "Encontrado en biblioteca 10:30 am", R.drawable.mochila),
@@ -55,7 +58,9 @@ fun DashboardContent1(onObjectClick: (Objeto) -> Unit) {
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* Acción para agregar nuevo objeto */ }) {
+            FloatingActionButton(onClick = {
+                navController.navigate("newObject") // Navegar a NewObjectScreen
+            }) {
                 Icon(Icons.Filled.Add, contentDescription = "Agregar")
             }
         }
@@ -69,13 +74,14 @@ fun DashboardContent1(onObjectClick: (Objeto) -> Unit) {
             items(objetos) { objeto ->
                 ObjetoItem(
                     objeto = objeto,
-                    onClick = { onObjectClick(objeto) },
+                    onClick = { /* Acción al hacer clic en el objeto */ },
                     onDelete = { objetos.remove(objeto) }
                 )
             }
         }
     }
 }
+
 
 @Composable
 fun ObjetoItem(objeto: Objeto, onClick: () -> Unit, onDelete: () -> Unit) {
@@ -118,7 +124,8 @@ fun ObjetoItem(objeto: Objeto, onClick: () -> Unit, onDelete: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewDashboardContent() {
+    val navController = rememberNavController()
     MaterialTheme {
-        DashboardContent1(onObjectClick = { /* Acción de previsualización */ })
+        DashboardContent1(navController = navController)
     }
 }

@@ -21,6 +21,8 @@ import com.luispedrolira.foundit.app.presentation.welcome.WelcomeRoute
 import com.luispedrolira.foundit.app.login.LoginRegistrationScreen
 import com.luispedrolira.foundit.app.presentation.mainFlow.profile.UserProfileScreen
 import com.luispedrolira.foundit.app.presentation.mainFlow.profile.ProfileRoute
+import com.luispedrolira.foundit.adminapp.presentation.dashboard.DashboardContent1
+import com.luispedrolira.foundit.adminapp.presentation.newobject.NewObjectContent
 
 
 @Composable
@@ -64,9 +66,11 @@ fun NavApp() {
                             is HomeNavigation.Search -> {
                                 navController.navigate("searchScreen?query=${destination.query}")
                             }
+
                             is HomeNavigation.Home -> {
                                 navController.popBackStack("homeScreen", false)
                             }
+
                             is HomeNavigation.Profile -> { // Nueva navegación al perfil
                                 navController.navigate("profileScreen")
                             }
@@ -121,7 +125,18 @@ fun NavApp() {
                 )
             }
 
+            composable("dashboardScreen") {
+                DashboardContent1(navController = navController)
+            }
+
+            composable("newObject") {
+                NewObjectContent(
+                    onBackClick = { navController.popBackStack() },
+                    navController = navController
+                )
+            }
         }
     }
 }
+
 

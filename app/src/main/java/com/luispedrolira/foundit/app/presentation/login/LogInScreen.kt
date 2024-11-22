@@ -33,8 +33,12 @@ fun LoginRegistrationScreen(navController: NavController) {
         when (selectedTabIndex) {
             0 -> RegistroScreen(onNextClick = { selectedTabIndex = 1 })
             1 -> LoginScreen(
-                onLoginSuccess = {
-                    navController.navigate("homeScreen") // Esta función ya no se utilizará, se elimino el button.
+                onLoginSuccess = { isAdmin ->
+                    if (isAdmin) {
+                        navController.navigate("dashboardScreen")
+                    } else {
+                        navController.navigate("homeScreen")
+                    }
                 }
             )
         }
@@ -85,10 +89,12 @@ fun RegistroScreen(onNextClick: () -> Unit) {
     }
 }
 
+
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun LoginScreen(onLoginSuccess: (Boolean) -> Unit) {
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
+    var errorMessage by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -105,7 +111,10 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = {
+                email = it
+                errorMessage = "" // Reset error message when email changes
+            },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
@@ -120,8 +129,30 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             visualTransformation = PasswordVisualTransformation()
         )
 
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+
         Button(
-            onClick = onLoginSuccess,
+            onClick = {
+                when {
+                    email.text.matches(Regex("^[a-zA-Z]+$")) -> {
+                        // Es administrador
+                        onLoginSuccess(true)
+                    }
+                    email.text.matches(Regex("^[a-zA-Z0-9]+$")) -> {
+                        // Es estudiante
+                        onLoginSuccess(false)
+                    }
+                    else -> {
+                        errorMessage = "Formato de email inválido. Verifica tu ingreso."
+                    }
+                }
+            },
             modifier = Modifier.fillMaxWidth().height(48.dp)
         ) {
             Text(text = "LOG IN")

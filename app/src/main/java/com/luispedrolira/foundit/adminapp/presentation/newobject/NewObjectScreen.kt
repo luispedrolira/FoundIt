@@ -11,8 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -29,20 +34,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+
 
 class NewObjectScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController() // Crear el NavController
+
             MaterialTheme {
-                NewObjectContent()
+                NewObjectContent(
+                    onBackClick = { finish() },
+                    navController = navController // Pasar el NavController
+                )
             }
         }
     }
 }
 
 @Composable
-fun NewObjectContent() {
+fun NewObjectContent(
+    onBackClick: () -> Unit,
+    navController: NavController // Agregar el NavController como parámetro
+) {
     var categoria by remember { mutableStateOf("") }
     var lugar by remember { mutableStateOf("") }
     var nombreEstudiante by remember { mutableStateOf("") }
@@ -51,8 +67,19 @@ fun NewObjectContent() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
+        // Botón de regreso <-
+        IconButton(
+            onClick = onBackClick,
+            modifier = Modifier.size(24.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Regresar"
+            )
+        }
+
         Text(
             text = "Ingresa objetos",
             fontSize = 24.sp,
@@ -111,7 +138,7 @@ fun NewObjectContent() {
         OutlinedTextField(
             value = carneEstudiante,
             onValueChange = { carneEstudiante = it },
-            label = { Text("Ingresa una descripción del obtejo encontrado") },
+            label = { Text("Ingresa una descripción del objeto encontrado") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
@@ -120,20 +147,15 @@ fun NewObjectContent() {
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = { /* Lógica para publicar */ },
+            onClick = {
+                // Navega al Dashboard al apachar "Publicar"
+                navController.navigate("dashboardScreen")
+            },
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(top = 16.dp)
         ) {
             Text("Publicar")
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewNewObjectContent() {
-    MaterialTheme {
-        NewObjectContent()
     }
 }
