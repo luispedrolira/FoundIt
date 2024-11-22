@@ -140,11 +140,11 @@ fun LoginScreen(onLoginSuccess: (Boolean) -> Unit) {
         Button(
             onClick = {
                 when {
-                    email.text.matches(Regex("^[a-zA-Z]+$")) -> {
+                    email.text.matches(Regex("^[a-zA-Z]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$")) -> {
                         // Es administrador
                         onLoginSuccess(true)
                     }
-                    email.text.matches(Regex("^[a-zA-Z0-9]+$")) -> {
+                    email.text.matches(Regex("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$")) -> {
                         // Es estudiante
                         onLoginSuccess(false)
                     }
