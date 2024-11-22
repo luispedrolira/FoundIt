@@ -1,5 +1,6 @@
 package com.luispedrolira.foundit.app.presentation.mainFlow.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,12 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
+import com.luispedrolira.foundit.R
 
 @Composable
 fun HomeScreen(
@@ -32,11 +34,20 @@ fun HomeScreen(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
+            // Logo de la app
+            Image(
+                painter = painterResource(id = R.drawable.logofoundit), // Asegúrate de usar el ID correcto
+                contentDescription = "Logo de FoundIt",
+                modifier = Modifier
+                    .size(80.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 8.dp)
+            )
+
             // Título superior
             Text(
                 text = "¡Encuentra tus cosas perdidas!",
                 fontWeight = FontWeight.Medium,
-                fontFamily = FontFamily.SansSerif,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 20.sp,
@@ -66,7 +77,7 @@ fun HomeScreen(
             LostItemsList(onNavigateToMissingObject)
         }
 
-        // Barra de navegación inferior
+        // Nuevo diseño de navegación inferior
         BottomNavigationBar(onNavigate)
     }
 }
@@ -76,38 +87,46 @@ fun BottomNavigationBar(onNavigate: (HomeNavigation) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
-            .padding(horizontal = 45.dp, vertical = 8.dp),
+            .background(Color(0xFFF5F5F5), RoundedCornerShape(24.dp))
+            .padding(horizontal = 20.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Botón de Home
         Box(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary, CircleShape)
-                .padding(12.dp)
-                .clickable { onNavigate(HomeNavigation.Home) }
+                .background(Color(0xFF4DB6AC), RoundedCornerShape(50)) // Color actualizado
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .clickable { onNavigate(HomeNavigation.Home) },
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.Home,
-                contentDescription = "Home",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "Home",
+                    tint = Color.White,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Home",
+                    color = Color.White,
+                    fontSize = 14.sp
+                )
+            }
         }
 
-        // Botón de perfil
+        // Botón de Perfil
         Box(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.secondary, CircleShape)
-                .padding(12.dp)
-                .clickable { onNavigate(HomeNavigation.Profile) }
+                .clickable { onNavigate(HomeNavigation.Profile) },
+            contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = "Perfil",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
+                tint = Color.Gray,
+                modifier = Modifier.size(28.dp)
             )
         }
     }
@@ -147,26 +166,40 @@ fun LostItemBox(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onDetailsClick() }
-            .padding(vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)),
-        shape = RoundedCornerShape(12.dp)
+            .padding(vertical = 8.dp)
+            .clickable { onDetailsClick() },
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .padding(16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                text = location,
-                fontSize = 14.sp,
-                color = Color.Gray
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    color = Color.Black // Letras en negro
+                )
+                Text(
+                    text = location,
+                    fontSize = 14.sp,
+                    color = Color.Black // Letras en negro
+                )
+            }
+
+            Button(
+                onClick = onDetailsClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                Text(text = "MÁS DETALLES", fontSize = 12.sp)
+            }
         }
     }
 }
